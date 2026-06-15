@@ -9,30 +9,27 @@
 <link id="font-link" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
-/* ── VARIABLES DE DISEÑO (Configurables desde el JS abajo) ── */
+/* ── VARIABLES BASE (Se sobreescriben con la paleta elegida) ── */
 :root {
   --bg-1: #FFFFFF;
-  --bg-2: #EBDEDE;
+  --bg-2: #F9F4F4;
   --accent: #D4A5A5; 
   --title-color: #4A3B3B;
   --text-color: #8A7575;
   --title-font: 'Cormorant Garamond', serif;
   --body-font: 'Jost', sans-serif;
   --title-size: 2.2rem;
-  
-  /* Espaciados iniciales */
   --espacio-titulo-texto: 30px;
   --espacio-texto-boton: 40px;
   --pos-pc-v: 50%;
   --pos-movil-v: 50%;
 }
 
-/* ── PREVENIR PARPADEO ── */
 body { 
     background-color: var(--bg-1); color: var(--text-color); 
     font-family: var(--body-font); line-height: 1.6; text-align: center;
     margin: 0; padding: 0; overflow-x: hidden;
-    opacity: 0; transition: opacity 1s ease-in; /* Aparece suave al cargar */
+    opacity: 0; transition: opacity 1s ease-in;
 }
 
 /* ── PORTADA ── */
@@ -48,7 +45,7 @@ body {
 @media (min-width: 768px) {
     #cover-bg { background-position: center var(--pos-pc-v) !important; }
 }
-#cover-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); }
+#cover-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
 #cover-content { position: relative; z-index: 2; padding: 20px; }
 #cover h1 { font-family: var(--title-font); font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 300; letter-spacing: 2px; }
 
@@ -58,10 +55,7 @@ body {
     margin-bottom: var(--espacio-titulo-texto);
     animation: floating 3s ease-in-out infinite;
 }
-@keyframes floating {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
-}
+@keyframes floating { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
 
 /* ── SECCIONES ── */
 section { padding: 6rem 1.5rem; opacity: 0; transform: translateY(20px); transition: 1s all ease; }
@@ -77,24 +71,25 @@ h2 {
 
 .btn {
     display: inline-block; padding: 1rem 2.2rem; margin-top: var(--espacio-texto-boton);
-    background: linear-gradient(145deg, #ffffff, var(--bg-2));
+    background: var(--bg-1);
     color: var(--title-color) !important; border: 1px solid var(--accent); 
     border-radius: 50px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; 
     letter-spacing: 3px; text-decoration: none; cursor: pointer; transition: 0.4s;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
+.btn:hover { background: var(--accent); color: white !important; }
 
 /* ── OTROS ── */
 .scroll-arrow {
     position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%);
     width: 30px; height: 30px; color: white; z-index: 10; animation: bounce 2s infinite;
 }
-@keyframes bounce { 0%, 100% { transform: translate(-50%, 0); opacity: 0.3; } 50% { transform: translate(-50%, 15px); opacity: 1; } }
+@keyframes bounce { 0%, 100% { transform: translate(-50%, 0); opacity: 0.3; } 50% { transform: translate(-50% , 15px); opacity: 1; } }
 
 .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 400px; margin: 2rem auto; }
 .cd-item { background: white; padding: 15px 5px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
 .cd-num { display: block; font-family: var(--title-font); font-size: 1.6rem; color: var(--accent); font-weight: bold; }
-.cd-lab { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; }
+.cd-lab { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-color); }
 
 .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 2rem; }
 .gallery-item { aspect-ratio: 1/1; overflow: hidden; border-radius: 15px; cursor: pointer; }
@@ -105,8 +100,7 @@ h2 {
     display: none; align-items: center; justify-content: center; z-index: 4000; padding: 20px;
 }
 .modal-content {
-    background: rgba(255, 255, 255, 0.25); border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 30px; width: 100%; max-width: 380px; padding: 2.5rem 1.5rem; color: white; position: relative;
+    background: white; border-radius: 30px; width: 100%; max-width: 380px; padding: 2.5rem 1.5rem; color: var(--text-color); position: relative;
 }
 #toast {
     position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
@@ -148,15 +142,15 @@ h2 {
 <!-- Modal Regalos -->
 <div id="gift-modal" class="modal" onclick="closeGiftModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
-        <h2 style="color:white; font-size: 1.5rem; letter-spacing: 2px;">Regalo</h2>
+        <h2 style="font-size: 1.5rem; letter-spacing: 2px;">Regalo</h2>
         <p id="m-texto" style="font-size: 0.85rem; margin-bottom: 10px; opacity: 0.9;"></p>
-        <div style="background: rgba(0,0,0,0.25); border-radius: 20px; padding: 1rem; margin: 1.5rem 0; text-align: left;">
-            <div style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Titular</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-titular"></span></div>
-            <div style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Banco</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-banco"></span></div>
-            <div style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Número</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-cuenta"></span></div>
+        <div style="background: var(--bg-2); border-radius: 20px; padding: 1rem; margin: 1.5rem 0; text-align: left;">
+            <div style="padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05);"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Titular</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-titular"></span></div>
+            <div style="padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05);"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Banco</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-banco"></span></div>
+            <div style="padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05);"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Número</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-cuenta"></span></div>
             <div style="padding: 8px 0;"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">CI</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-ci"></span></div>
         </div>
-        <button class="btn" style="width: 100%; background:white; margin-top:0;" onclick="copyAcc()">Copiar número</button>
+        <button class="btn" style="width: 100%; margin-top:0;" onclick="copyAcc()">Copiar número</button>
     </div>
 </div>
 
@@ -176,30 +170,54 @@ const CONFIG = {
         fechaCuenta: new Date(2026, 11, 20, 18, 0),
         fotoPort: "cover.jpg",
         
-        /* POSICIÓN DE LA FOTO (Usar números 0-100) */
+        /* POSICIÓN DE LA FOTO (0-100) */
         posicionVerticalPC: 35, 
-        posicionVerticalMovil: 50
+        posicionVerticalMovil: 50,
+
+        /* ──── ELIGE TU PALETA DE COLORES AQUÍ ──── */
+        /* Opciones: "rosado", "eucalipto", "azul_noche", "boho", "minimal", "lavanda", "arena", "forest" */
+        paletaElegida: "rosado" 
     },
     diseno: {
-        /* ESPACIADOS (en píxeles) */
         espacioTituloATexto: 30,
         espacioTextoABoton: 40
     },
+    // ...resto de los datos igual
     eventos: {
         ceremonia: { t: "Ceremonia", f: "20 de diciembre", h: "17:00 Horas", l: "Iglesia San Franciso de Asís", d: "Cmno. Torres 3231, Montevideo, Uruguay", m: "https://www.google.com/maps" },
         fiesta: { t: "Fiesta", f: "20 de diciembre", h: "21:00 horass", l: "salón de Eventos Aurora Palace", d: "Avda Las Palmas 1212, Montevideo, Uruguay", m: "https://www.google.com/maps" }
     },
     regalos: {
-        texto: "Si deseas hacernos un presente, puedes colaborar aquí:",
+        texto: "Tu presencia es nuestro mejor regalo, pero si deseas hacernos un presente:",
         titular: "Sofía y Martín", banco: "Santander", cuenta: "1234567890", ci: "1.234.567-8"
     },
     cierre: { t: "¡Te esperamos!", s: "Tu presencia es muy importante para nosotros." },
     fotos: ["foto1.jpg", "foto2.jpg", "foto3.jpg", "foto4.jpg", "foto5.jpg", "foto6.jpg", "foto7.jpg", "foto8.jpg", "foto9.jpg", "foto10.jpg"]
 };
 
-// --- APLICAR CONFIGURACIÓN ---
+/* ── DEFINICIÓN DE LAS PALETAS ── */
+const PALETAS = {
+    rosado: { bg1: "#FFFFFF", bg2: "#EBDEDE", accent: "#D4A5A5", title: "#4A3B3B", text: "#8A7575" },
+    eucalipto: { bg1: "#FFFFFF", bg2: "#E2E8E4", accent: "#8B9A90", title: "#2D3B33", text: "#5E6B63" },
+    azul_noche: { bg1: "#FFFFFF", bg2: "#E6EBF2", accent: "#5D7694", title: "#1A2634", text: "#4A5A6E" },
+    boho: { bg1: "#FDFBF9", bg2: "#F2E8DF", accent: "#C68B5C", title: "#4D3422", text: "#7A6353" },
+    minimal: { bg1: "#FFFFFF", bg2: "#F5F5F5", accent: "#333333", title: "#000000", text: "#666666" },
+    lavanda: { bg1: "#FFFFFF", bg2: "#F0EBF4", accent: "#A695BB", title: "#3E344D", text: "#6F637E" },
+    arena: { bg1: "#FFFFFF", bg2: "#F7F2E9", accent: "#D1BFA7", title: "#5C5449", text: "#8C8375" },
+    forest: { bg1: "#FFFFFF", bg2: "#EDF2EA", accent: "#7A8C74", title: "#2E362C", text: "#586355" }
+};
+
+// --- APLICAR PALETA Y CONFIGURACIÓN ---
 function init() {
+    const paleta = PALETAS[CONFIG.global.paletaElegida] || PALETAS.rosado;
     const root = document.documentElement;
+    
+    root.style.setProperty('--bg-1', paleta.bg1);
+    root.style.setProperty('--bg-2', paleta.bg2);
+    root.style.setProperty('--accent', paleta.accent);
+    root.style.setProperty('--title-color', paleta.title);
+    root.style.setProperty('--text-color', paleta.text);
+    
     root.style.setProperty('--pos-pc-v', CONFIG.global.posicionVerticalPC + '%');
     root.style.setProperty('--pos-movil-v', CONFIG.global.posicionVerticalMovil + '%');
     root.style.setProperty('--espacio-titulo-texto', CONFIG.diseno.espacioTituloATexto + 'px');
@@ -210,13 +228,11 @@ function init() {
     document.getElementById('t-eyebrow').innerText = CONFIG.global.frase;
     document.getElementById('t-cover-date').innerText = CONFIG.global.fecha;
 
-    // Generar secciones
     renderSections();
-    
-    // Mostrar el cuerpo de la invitación
     document.body.style.opacity = "1";
 }
 
+// ... (Resto de funciones: renderSections, lightbox, countdown, etc.)
 const iconSet = {
     heart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`,
     calendar: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
@@ -228,7 +244,6 @@ const iconSet = {
 
 function renderSections() {
     const main = document.getElementById('main-content');
-    
     const createSec = (id, icon, title, body) => {
         const s = document.createElement('section');
         s.id = id;
@@ -239,21 +254,17 @@ function renderSections() {
     createSec('historia', 'heart', 'Nuestra Historia', '<p>En un mundo lleno de coincidencias, encontrarnos fue nuestro momento favorito.</p>');
     createSec('cuenta', 'calendar', 'Falta Poco', `<div class="countdown-grid"><div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-lab">Días</span></div><div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-lab">Hs</span></div><div class="cd-item"><span class="cd-num" id="mins">00</span><span class="cd-lab">Min</span></div><div class="cd-item"><span class="cd-num" id="secs">00</span><span class="cd-lab">Seg</span></div></div>`);
     createSec('ubicacion', 'map', 'Dónde & Cuándo', `<div><h3>${CONFIG.eventos.ceremonia.t}</h3><p>${CONFIG.eventos.ceremonia.f} - ${CONFIG.eventos.ceremonia.h}<br>${CONFIG.eventos.ceremonia.l}<br>${CONFIG.eventos.ceremonia.d}</p><a href="${CONFIG.eventos.ceremonia.m}" target="_blank" class="btn">Ver Mapa</a></div><div style="margin-top:3rem"><h3>${CONFIG.eventos.fiesta.t}</h3><p>${CONFIG.eventos.fiesta.f} - ${CONFIG.eventos.fiesta.h}<br>${CONFIG.eventos.fiesta.l}<br>${CONFIG.eventos.fiesta.d}</p><a href="${CONFIG.eventos.fiesta.m}" target="_blank" class="btn">Ver Mapa</a></div>`);
-    
     let g = `<div class="gallery-grid">`;
     CONFIG.fotos.forEach(f => g += `<div class="gallery-item" onclick="openLightbox('${f}')"><img src="${f}"></div>`);
     createSec('galeria', 'camera', 'Momentos', g + `</div>`);
-    
     createSec('rsvp', 'rings', 'Confirmación', `<p>Confirmar asistencia antes del 10 de diciembre.</p><a href="https://wa.me/59899000000" target="_blank" class="btn">WhatsApp</a>`);
     createSec('regalos', 'gift', 'Regalos', `<p>${CONFIG.regalos.texto}</p><button class="btn" onclick="openGiftModal()">Ver Datos</button>`);
     createSec('cierre', 'heart', CONFIG.cierre.t, `<p>${CONFIG.cierre.s}</p><div style="width:120px; margin:2rem auto; color:var(--accent); opacity:0.5;"><svg viewBox="0 0 100 20" stroke="currentColor"><path d="M0 10 Q25 0 50 10 T100 10" fill="none"/></svg></div>`);
 
-    // Observar scroll
     const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.1});
     document.querySelectorAll('section').forEach(s => obs.observe(s));
 }
 
-// Funciones Globales
 function openLightbox(s) { document.getElementById('lightbox').querySelector('img').src = s; document.getElementById('lightbox').style.display = 'flex'; }
 function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; }
 function openGiftModal() {
@@ -278,7 +289,6 @@ setInterval(() => {
     document.getElementById('secs').innerText = Math.floor((t/1000)%60);
 }, 1000);
 
-// Lanzar cuando el DOM esté listo
 window.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
