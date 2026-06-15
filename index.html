@@ -186,11 +186,11 @@ const CONFIG = {
         espacioTextoABoton: 40
     },
     eventos: {
-        ceremonia: { t: "Ceremonia", f: "20 de diciembre", h: "17:00 Horas", l: "Iglesia San Franciso de Asís", d: "Cmno. Torres 3231, Montevideo", m: "https://www.google.com/maps" },
-        fiesta: { t: "Fiesta", f: "20 de diciembre", h: "21:00 horass", l: "salón de Eventos Aurora Palace", d: "Avda Las Palmas 1212, Montevideo", m: "https://www.google.com/maps" }
+        ceremonia: { t: "Ceremonia", f: "20 de diciembre", h: "17:00 Horas", l: "Iglesia San Franciso de Asís", d: "Cmno. Torres 3231, Montevideo, Uruguay", m: "https://www.google.com/maps" },
+        fiesta: { t: "Fiesta", f: "20 de diciembre", h: "21:00 horass", l: "salón de Eventos Aurora Palace", d: "Avda Las Palmas 1212, Montevideo, Uruguay", m: "https://www.google.com/maps" }
     },
     regalos: {
-        texto: "",
+        texto: "Si deseas hacernos un presente, puedes colaborar aquí:",
         titular: "Sofía y Martín", banco: "Santander", cuenta: "1234567890", ci: "1.234.567-8"
     },
     cierre: { t: "¡Te esperamos!", s: "Tu presencia es muy importante para nosotros." },
@@ -237,4 +237,49 @@ function renderSections() {
     };
 
     createSec('historia', 'heart', 'Nuestra Historia', '<p>En un mundo lleno de coincidencias, encontrarnos fue nuestro momento favorito.</p>');
-    createSec('cuenta', 'calendar', 'Falta Poco', `<div class="countdown-grid"><div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-lab">Días</span></div><div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-lab">Hs</span
+    createSec('cuenta', 'calendar', 'Falta Poco', `<div class="countdown-grid"><div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-lab">Días</span></div><div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-lab">Hs</span></div><div class="cd-item"><span class="cd-num" id="mins">00</span><span class="cd-lab">Min</span></div><div class="cd-item"><span class="cd-num" id="secs">00</span><span class="cd-lab">Seg</span></div></div>`);
+    createSec('ubicacion', 'map', 'Dónde & Cuándo', `<div><h3>${CONFIG.eventos.ceremonia.t}</h3><p>${CONFIG.eventos.ceremonia.f} - ${CONFIG.eventos.ceremonia.h}<br>${CONFIG.eventos.ceremonia.l}<br>${CONFIG.eventos.ceremonia.d}</p><a href="${CONFIG.eventos.ceremonia.m}" target="_blank" class="btn">Ver Mapa</a></div><div style="margin-top:3rem"><h3>${CONFIG.eventos.fiesta.t}</h3><p>${CONFIG.eventos.fiesta.f} - ${CONFIG.eventos.fiesta.h}<br>${CONFIG.eventos.fiesta.l}<br>${CONFIG.eventos.fiesta.d}</p><a href="${CONFIG.eventos.fiesta.m}" target="_blank" class="btn">Ver Mapa</a></div>`);
+    
+    let g = `<div class="gallery-grid">`;
+    CONFIG.fotos.forEach(f => g += `<div class="gallery-item" onclick="openLightbox('${f}')"><img src="${f}"></div>`);
+    createSec('galeria', 'camera', 'Momentos', g + `</div>`);
+    
+    createSec('rsvp', 'rings', 'Confirmación', `<p>Confirmar asistencia antes del 10 de diciembre.</p><a href="https://wa.me/59899000000" target="_blank" class="btn">WhatsApp</a>`);
+    createSec('regalos', 'gift', 'Regalos', `<p>${CONFIG.regalos.texto}</p><button class="btn" onclick="openGiftModal()">Ver Datos</button>`);
+    createSec('cierre', 'heart', CONFIG.cierre.t, `<p>${CONFIG.cierre.s}</p><div style="width:120px; margin:2rem auto; color:var(--accent); opacity:0.5;"><svg viewBox="0 0 100 20" stroke="currentColor"><path d="M0 10 Q25 0 50 10 T100 10" fill="none"/></svg></div>`);
+
+    // Observar scroll
+    const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.1});
+    document.querySelectorAll('section').forEach(s => obs.observe(s));
+}
+
+// Funciones Globales
+function openLightbox(s) { document.getElementById('lightbox').querySelector('img').src = s; document.getElementById('lightbox').style.display = 'flex'; }
+function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; }
+function openGiftModal() {
+    const r = CONFIG.regalos;
+    document.getElementById('m-texto').innerText = r.texto;
+    document.getElementById('m-titular').innerText = r.titular;
+    document.getElementById('m-banco').innerText = r.banco;
+    document.getElementById('m-cuenta').innerText = r.cuenta;
+    document.getElementById('m-ci').innerText = r.ci;
+    document.getElementById('gift-modal').style.display = 'flex';
+}
+function closeGiftModal() { document.getElementById('gift-modal').style.display = 'none'; }
+function copyAcc() { navigator.clipboard.writeText(CONFIG.regalos.cuenta); const t = document.getElementById('toast'); t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 2000); }
+function toggleMusic() { const m = document.getElementById('bg-music'); m.paused ? m.play() : m.pause(); }
+
+setInterval(() => {
+    const t = CONFIG.global.fechaCuenta - new Date();
+    if(t<0) return;
+    document.getElementById('days').innerText = Math.floor(t/86400000);
+    document.getElementById('hours').innerText = Math.floor((t/3600000)%24);
+    document.getElementById('mins').innerText = Math.floor((t/60000)%60);
+    document.getElementById('secs').innerText = Math.floor((t/1000)%60);
+}, 1000);
+
+// Lanzar cuando el DOM esté listo
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
