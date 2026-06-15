@@ -74,15 +74,43 @@ h2 {
 .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
 
 /* ── BOTONES 3D BURBUJA ── */
+/* ── BOTONES 3D MEJORADOS (Para que siempre se vean) ── */
 .btn {
-    display: inline-block; padding: 0.9rem 2rem; margin: 10px;
-    background: linear-gradient(180deg, #FFFFFF 0%, #F0F0F0 100%);
-    color: var(--title-color); border: none; border-radius: 50px;
-    font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
-    text-decoration: none; cursor: pointer; transition: 0.3s;
-    box-shadow: 0 8px 15px rgba(0,0,0,0.08), inset 0 -3px 5px rgba(0,0,0,0.03), inset 0 3px 5px white;
+    display: inline-block; 
+    padding: 1rem 2.2rem; 
+    margin: 10px;
+    /* Usamos el color de acento de la paleta como fondo principal */
+    background: linear-gradient(180deg, var(--accent) 0%, var(--accent) 100%);
+    /* El texto ahora es blanco para que resalte sobre el color */
+    color: #FFFFFF !important; 
+    border: none; 
+    border-radius: 50px;
+    font-size: 0.75rem; 
+    font-weight: 600; 
+    text-transform: uppercase; 
+    letter-spacing: 2px;
+    text-decoration: none; 
+    cursor: pointer; 
+    transition: 0.3s;
+    /* Sombra 3D refinada */
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15), 
+                inset 0 -4px 6px rgba(0,0,0,0.2), 
+                inset 0 4px 6px rgba(255,255,255,0.3);
 }
-.btn-pink { background: linear-gradient(180deg, #F7D7D7 0%, #EBC2C2 100%); }
+
+.btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1); /* Brilla un poco al pasar el mouse */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* El botón de WhatsApp (btn-pink) ya no necesita un estilo diferente 
+   porque todos los botones ahora son resaltados */
 .btn:active { transform: translateY(2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
 
 /* ── MODAL & TOAST ── */
