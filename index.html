@@ -9,7 +9,7 @@
 <link id="font-link" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
-/* ── VARIABLES DE DISEÑO ── */
+/* ── VARIABLES DE DISEÑO (Configurables desde el JS abajo) ── */
 :root {
   --bg-1: #FFFFFF;
   --bg-2: #EBDEDE;
@@ -20,47 +20,33 @@
   --body-font: 'Jost', sans-serif;
   --title-size: 2.2rem;
   
-  --espacio-titulo-texto: 2rem;
-  --espacio-texto-boton: 1.5rem;
-  --pos-pc-vertical: 50%;
-  --pos-movil-vertical: 50%;
+  /* Espaciados iniciales */
+  --espacio-titulo-texto: 30px;
+  --espacio-texto-boton: 40px;
+  --pos-pc-v: 50%;
+  --pos-movil-v: 50%;
 }
 
-/* ── PANTALLA DE CARGA (Para que todo aparezca junto) ── */
-#loading-overlay {
-    position: fixed; inset: 0; background: var(--bg-1);
-    z-index: 9999; display: flex; align-items: center; justify-content: center;
-    transition: opacity 0.8s ease;
-}
-.spinner {
-    width: 40px; height: 40px; border: 3px solid var(--bg-2);
-    border-top: 3px solid var(--accent); border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-/* ── RESET & BASE ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+/* ── PREVENIR PARPADEO ── */
 body { 
     background-color: var(--bg-1); color: var(--text-color); 
     font-family: var(--body-font); line-height: 1.6; text-align: center;
-    overflow-x: hidden;
+    margin: 0; padding: 0; overflow-x: hidden;
+    opacity: 0; transition: opacity 1s ease-in; /* Aparece suave al cargar */
 }
 
 /* ── PORTADA ── */
 #cover {
   position: relative; height: 100vh; display: flex; 
   align-items: center; justify-content: center; overflow: hidden; color: white;
-  opacity: 0; transition: opacity 1.2s ease; /* Aparecerá suavemente */
 }
 #cover-bg { 
     position: absolute; inset: 0; 
     background-size: cover; background-repeat: no-repeat;
-    background-position: center var(--pos-movil-vertical); 
+    background-position: center var(--pos-movil-v); 
 }
 @media (min-width: 768px) {
-    #cover-bg { background-position: center var(--pos-pc-vertical) !important; }
+    #cover-bg { background-position: center var(--pos-pc-v) !important; }
 }
 #cover-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); }
 #cover-content { position: relative; z-index: 2; padding: 20px; }
@@ -82,6 +68,7 @@ section { padding: 6rem 1.5rem; opacity: 0; transform: translateY(20px); transit
 section.visible { opacity: 1; transform: translateY(0); }
 section:nth-of-type(odd) { background-color: var(--bg-1) !important; }
 section:nth-of-type(even) { background-color: var(--bg-2) !important; }
+
 h2 { 
     font-family: var(--title-font); font-size: var(--title-size); 
     font-weight: 300; letter-spacing: 4px; text-transform: uppercase;
@@ -138,11 +125,6 @@ h2 {
 </head>
 <body>
 
-<!-- Pantalla de carga -->
-<div id="loading-overlay">
-    <div class="spinner"></div>
-</div>
-
 <div id="toast">Cuenta copiada</div>
 
 <div id="music-btn" onclick="toggleMusic()">
@@ -183,6 +165,9 @@ h2 {
 </div>
 
 <script>
+/* ════════════════════════════════════════
+   ★ CONFIGURACIÓN FÁCIL
+═════════════════════════════════════════= */
 const CONFIG = {
     global: {
         nombres: "Sofía & Martín",
@@ -190,10 +175,13 @@ const CONFIG = {
         fecha: "20 . 12 . 2026",
         fechaCuenta: new Date(2026, 11, 20, 18, 0),
         fotoPort: "cover.jpg",
+        
+        /* POSICIÓN DE LA FOTO (Usar números 0-100) */
         posicionVerticalPC: 35, 
         posicionVerticalMovil: 50
     },
     diseno: {
+        /* ESPACIADOS (en píxeles) */
         espacioTituloATexto: 30,
         espacioTextoABoton: 40
     },
@@ -209,28 +197,26 @@ const CONFIG = {
     fotos: ["foto1.jpg", "foto2.jpg", "foto3.jpg", "foto4.jpg", "foto5.jpg", "foto6.jpg", "foto7.jpg", "foto8.jpg", "foto9.jpg", "foto10.jpg"]
 };
 
-// --- PRECARGA DE IMAGEN DE PORTADA ---
-const coverImg = new Image();
-coverImg.src = CONFIG.global.fotoPort;
-coverImg.onload = function() {
-    // Cuando la imagen carga, aplicamos estilos y mostramos todo
+// --- APLICAR CONFIGURACIÓN ---
+function init() {
+    const root = document.documentElement;
+    root.style.setProperty('--pos-pc-v', CONFIG.global.posicionVerticalPC + '%');
+    root.style.setProperty('--pos-movil-v', CONFIG.global.posicionVerticalMovil + '%');
+    root.style.setProperty('--espacio-titulo-texto', CONFIG.diseno.espacioTituloATexto + 'px');
+    root.style.setProperty('--espacio-texto-boton', CONFIG.diseno.espacioTextoABoton + 'px');
+
     document.getElementById('cover-bg').style.backgroundImage = `url('${CONFIG.global.fotoPort}')`;
-    document.getElementById('loading-overlay').style.opacity = '0';
-    document.getElementById('cover').style.opacity = '1';
-    setTimeout(() => { document.getElementById('loading-overlay').remove(); }, 800);
-};
+    document.getElementById('t-names').innerHTML = CONFIG.global.nombres.replace('&', '<em>&</em>');
+    document.getElementById('t-eyebrow').innerText = CONFIG.global.frase;
+    document.getElementById('t-cover-date').innerText = CONFIG.global.fecha;
 
-const root = document.documentElement;
-root.style.setProperty('--pos-pc-vertical', CONFIG.global.posicionVerticalPC + '%');
-root.style.setProperty('--pos-movil-vertical', CONFIG.global.posicionVerticalMovil + '%');
-root.style.setProperty('--espacio-titulo-texto', CONFIG.diseno.espacioTituloATexto + 'px');
-root.style.setProperty('--espacio-texto-boton', CONFIG.diseno.espacioTextoABoton + 'px');
+    // Generar secciones
+    renderSections();
+    
+    // Mostrar el cuerpo de la invitación
+    document.body.style.opacity = "1";
+}
 
-document.getElementById('t-names').innerHTML = CONFIG.global.nombres.replace('&', '<em>&</em>');
-document.getElementById('t-eyebrow').innerText = CONFIG.global.frase;
-document.getElementById('t-cover-date').innerText = CONFIG.global.fecha;
-
-const main = document.getElementById('main-content');
 const iconSet = {
     heart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`,
     calendar: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
@@ -240,19 +226,15 @@ const iconSet = {
     gift: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>`
 };
 
-function createSec(id, icon, title, body) {
-    const s = document.createElement('section');
-    s.id = id;
-    s.innerHTML = `<div style="max-width:800px; margin:0 auto;"><div class="icon-container">${iconSet[icon]}</div><h2>${title}</h2>${body}</div>`;
-    main.appendChild(s);
-}
+function renderSections() {
+    const main = document.getElementById('main-content');
+    
+    const createSec = (id, icon, title, body) => {
+        const s = document.createElement('section');
+        s.id = id;
+        s.innerHTML = `<div style="max-width:800px; margin:0 auto;"><div class="icon-container">${iconSet[icon]}</div><h2>${title}</h2>${body}</div>`;
+        main.appendChild(s);
+    };
 
-createSec('historia', 'heart', 'Nuestra Historia', '<p>En un mundo lleno de coincidencias, encontrarnos fue nuestro momento favorito.</p>');
-createSec('cuenta', 'calendar', 'Falta Poco', `<div class="countdown-grid"><div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-lab">Días</span></div><div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-lab">Hs</span></div><div class="cd-item"><span class="cd-num" id="mins">00</span><span class="cd-lab">Min</span></div><div class="cd-item"><span class="cd-num" id="secs">00</span><span class="cd-lab">Seg</span></div></div>`);
-createSec('ubicacion', 'map', 'Dónde & Cuándo', `<div><h3>${CONFIG.eventos.ceremonia.t}</h3><p>${CONFIG.eventos.ceremonia.f} - ${CONFIG.eventos.ceremonia.h}<br>${CONFIG.eventos.ceremonia.l}<br>${CONFIG.eventos.ceremonia.d}</p><a href="${CONFIG.eventos.ceremonia.m}" target="_blank" class="btn">Ver Mapa</a></div><div style="margin-top:3rem"><h3>${CONFIG.eventos.fiesta.t}</h3><p>${CONFIG.eventos.fiesta.f} - ${CONFIG.eventos.fiesta.h}<br>${CONFIG.eventos.fiesta.l}<br>${CONFIG.eventos.fiesta.d}</p><a href="${CONFIG.eventos.fiesta.m}" target="_blank" class="btn">Ver Mapa</a></div>`);
-let g = `<div class="gallery-grid">`;
-CONFIG.fotos.forEach(f => g += `<div class="gallery-item" onclick="openLightbox('${f}')"><img src="${f}"></div>`);
-createSec('galeria', 'camera', 'Momentos', g + `</div>`);
-createSec('rsvp', 'rings', 'Confirmación', `<p>Confirmar asistencia antes del 10 de diciembre.</p><a href="https://wa.me/59899000000" target="_blank" class="btn">WhatsApp</a>`);
-createSec('regalos', 'gift', 'Regalos', `<p>${CONFIG.regalos.texto}</p><button class="btn" onclick="openGiftModal()">Ver Datos</button>`);
-createSec('cierre', 'heart', CONFIG.cierre.t, `<p>${CONFIG.cierre.s}</p><div style="width:120px; margin:2rem auto; color:var(--accent); opacity:0.5;"><svg viewBox="0 0 100 20" stroke="currentColor"><path d="M0 10 Q25 0 50 10 T100 10" fill="none"/></sv
+    createSec('historia', 'heart', 'Nuestra Historia', '<p>En un mundo lleno de coincidencias, encontrarnos fue nuestro momento favorito.</p>');
+    createSec('cuenta', 'calendar', 'Falta Poco', `<div class="countdown-grid"><div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-lab">Días</span></div><div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-lab">Hs</span
