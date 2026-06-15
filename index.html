@@ -6,10 +6,10 @@
 <title>Invitación Digital Premium</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link id="font-link" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
-/* ── VARIABLES BASE (Se sobreescriben con la paleta elegida) ── */
+/* ── VARIABLES BASE (Se controlan desde el CONFIG abajo) ── */
 :root {
   --bg-1: #FFFFFF;
   --bg-2: #F9F4F4;
@@ -19,17 +19,16 @@
   --title-font: 'Cormorant Garamond', serif;
   --body-font: 'Jost', sans-serif;
   --title-size: 2.2rem;
-  --espacio-titulo-texto: 30px;
-  --espacio-texto-boton: 40px;
-  --pos-pc-v: 50%;
-  --pos-movil-v: 50%;
+  --esp-t-t: 30px;
+  --esp-t-b: 40px;
+  --pos-pc: 50%;
+  --pos-mo: 50%;
 }
 
 body { 
     background-color: var(--bg-1); color: var(--text-color); 
     font-family: var(--body-font); line-height: 1.6; text-align: center;
     margin: 0; padding: 0; overflow-x: hidden;
-    opacity: 0; transition: opacity 1s ease-in;
 }
 
 /* ── PORTADA ── */
@@ -40,10 +39,10 @@ body {
 #cover-bg { 
     position: absolute; inset: 0; 
     background-size: cover; background-repeat: no-repeat;
-    background-position: center var(--pos-movil-v); 
+    background-position: center var(--pos-mo); 
 }
 @media (min-width: 768px) {
-    #cover-bg { background-position: center var(--pos-pc-v) !important; }
+    #cover-bg { background-position: center var(--pos-pc) !important; }
 }
 #cover-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
 #cover-content { position: relative; z-index: 2; padding: 20px; }
@@ -52,25 +51,26 @@ body {
 /* ── ICONOS FLOTANTES ── */
 .icon-container {
     width: 45px; margin: 0 auto; color: var(--accent);
-    margin-bottom: var(--espacio-titulo-texto);
+    margin-bottom: var(--esp-t-t);
     animation: floating 3s ease-in-out infinite;
 }
 @keyframes floating { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
 
 /* ── SECCIONES ── */
-section { padding: 6rem 1.5rem; opacity: 0; transform: translateY(20px); transition: 1s all ease; }
-section.visible { opacity: 1; transform: translateY(0); }
-section:nth-of-type(odd) { background-color: var(--bg-1) !important; }
-section:nth-of-type(even) { background-color: var(--bg-2) !important; }
+section { padding: 6rem 1.5rem; }
+section:nth-of-type(odd) { background-color: var(--bg-1); }
+section:nth-of-type(even) { background-color: var(--bg-2); }
 
 h2 { 
     font-family: var(--title-font); font-size: var(--title-size); 
     font-weight: 300; letter-spacing: 4px; text-transform: uppercase;
-    color: var(--title-color); margin-bottom: var(--espacio-titulo-texto);
+    color: var(--title-color); margin-bottom: var(--esp-t-t);
 }
 
+.section-body { margin-bottom: var(--esp-t-b); }
+
 .btn {
-    display: inline-block; padding: 1rem 2.2rem; margin-top: var(--espacio-texto-boton);
+    display: inline-block; padding: 1rem 2.2rem; margin: 10px;
     background: var(--bg-1);
     color: var(--title-color) !important; border: 1px solid var(--accent); 
     border-radius: 50px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; 
@@ -80,12 +80,6 @@ h2 {
 .btn:hover { background: var(--accent); color: white !important; }
 
 /* ── OTROS ── */
-.scroll-arrow {
-    position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%);
-    width: 30px; height: 30px; color: white; z-index: 10; animation: bounce 2s infinite;
-}
-@keyframes bounce { 0%, 100% { transform: translate(-50%, 0); opacity: 0.3; } 50% { transform: translate(-50% , 15px); opacity: 1; } }
-
 .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 400px; margin: 2rem auto; }
 .cd-item { background: white; padding: 15px 5px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
 .cd-num { display: block; font-family: var(--title-font); font-size: 1.6rem; color: var(--accent); font-weight: bold; }
@@ -110,186 +104,4 @@ h2 {
 #music-btn {
     position: fixed; bottom: 25px; right: 25px; width: 45px; height: 45px;
     background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 5000; cursor: pointer; color: var(--accent);
-}
-#lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 6000; display: none; align-items: center; justify-content: center; }
-#lightbox img { max-width: 90%; max-height: 80%; border-radius: 10px; }
-@media (min-width: 768px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); } }
-</style>
-</head>
-<body>
-
-<div id="toast">Cuenta copiada</div>
-
-<div id="music-btn" onclick="toggleMusic()">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-</div>
-<audio id="bg-music" src="musica.mp3" loop></audio>
-
-<div id="cover">
-    <div id="cover-bg"></div>
-    <div id="cover-overlay"></div>
-    <div id="cover-content">
-        <span style="text-transform: uppercase; letter-spacing: 5px; font-size: 0.65rem; display: block; margin-bottom: 1.5rem;" id="t-eyebrow"></span>
-        <h1 id="t-names"></h1>
-        <p id="t-cover-date" style="letter-spacing: 3px; font-size: 0.8rem; margin-top: 1rem;"></p>
-    </div>
-    <div class="scroll-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg></div>
-</div>
-
-<div id="main-content"></div>
-
-<!-- Modal Regalos -->
-<div id="gift-modal" class="modal" onclick="closeGiftModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <h2 style="font-size: 1.5rem; letter-spacing: 2px;">Regalo</h2>
-        <p id="m-texto" style="font-size: 0.85rem; margin-bottom: 10px; opacity: 0.9;"></p>
-        <div style="background: var(--bg-2); border-radius: 20px; padding: 1rem; margin: 1.5rem 0; text-align: left;">
-            <div style="padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05);"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Titular</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-titular"></span></div>
-            <div style="padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05);"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Banco</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-banco"></span></div>
-            <div style="padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05);"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Número</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-cuenta"></span></div>
-            <div style="padding: 8px 0;"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">CI</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-ci"></span></div>
-        </div>
-        <button class="btn" style="width: 100%; margin-top:0;" onclick="copyAcc()">Copiar número</button>
-    </div>
-</div>
-
-<div id="lightbox" onclick="closeLightbox()">
-    <img src="" onclick="event.stopPropagation()">
-</div>
-
-<script>
-/* ════════════════════════════════════════
-   ★ CONFIGURACIÓN FÁCIL
-═════════════════════════════════════════= */
-const CONFIG = {
-    global: {
-        nombres: "Sofía & Martín",
-        frase: "¡Nos Casamos!",
-        fecha: "20 . 12 . 2026",
-        fechaCuenta: new Date(2026, 11, 20, 18, 0),
-        fotoPort: "cover.jpg",
-        
-        /* POSICIÓN DE LA FOTO (0-100) */
-        posicionVerticalPC: 35, 
-        posicionVerticalMovil: 50,
-
-        /* ──── ELIGE TU PALETA DE COLORES AQUÍ ──── */
-        /* Opciones: "rosado", "eucalipto", "azul_noche", "boho", "minimal", "lavanda", "arena", "forest" */
-        paletaElegida: "rosado" 
-    },
-    diseno: {
-        espacioTituloATexto: 30,
-        espacioTextoABoton: 40
-    },
-    // ...resto de los datos igual
-    eventos: {
-        ceremonia: { t: "Ceremonia", f: "20 de diciembre", h: "17:00 Horas", l: "Iglesia San Franciso de Asís", d: "Cmno. Torres 3231, Montevideo, m: "https://www.google.com/maps" },
-        fiesta: { t: "Fiesta", f: "20 de diciembre", h: "21:00 horass", l: "Salón de Eventos Aurora Palace", d: "Avda Las Palmas 1212, Montevideo", m: "https://www.google.com/maps" }
-    },
-    regalos: {
-        texto: "Tu presencia es nuestro mejor regalo, pero si deseas hacernos un presente:",
-        titular: "Sofía y Martín", banco: "Santander", cuenta: "1234567890", ci: "1.234.567-8"
-    },
-    cierre: { t: "¡Te esperamos!", s: "Tu presencia es muy importante para nosotros." },
-    fotos: ["foto1.jpg", "foto2.jpg", "foto3.jpg", "foto4.jpg", "foto5.jpg", "foto6.jpg", "foto7.jpg", "foto8.jpg", "foto9.jpg", "foto10.jpg"]
-};
-
-/* ── DEFINICIÓN DE LAS PALETAS ── */
-const PALETAS = {
-    rosado: { bg1: "#FFFFFF", bg2: "#EBDEDE", accent: "#D4A5A5", title: "#4A3B3B", text: "#8A7575" },
-    eucalipto: { bg1: "#FFFFFF", bg2: "#E2E8E4", accent: "#8B9A90", title: "#2D3B33", text: "#5E6B63" },
-    azul_noche: { bg1: "#FFFFFF", bg2: "#E6EBF2", accent: "#5D7694", title: "#1A2634", text: "#4A5A6E" },
-    boho: { bg1: "#FDFBF9", bg2: "#F2E8DF", accent: "#C68B5C", title: "#4D3422", text: "#7A6353" },
-    minimal: { bg1: "#FFFFFF", bg2: "#F5F5F5", accent: "#333333", title: "#000000", text: "#666666" },
-    lavanda: { bg1: "#FFFFFF", bg2: "#F0EBF4", accent: "#A695BB", title: "#3E344D", text: "#6F637E" },
-    arena: { bg1: "#FFFFFF", bg2: "#F7F2E9", accent: "#D1BFA7", title: "#5C5449", text: "#8C8375" },
-    forest: { bg1: "#FFFFFF", bg2: "#EDF2EA", accent: "#7A8C74", title: "#2E362C", text: "#586355" }
-};
-
-// --- APLICAR PALETA Y CONFIGURACIÓN ---
-function init() {
-    const paleta = PALETAS[CONFIG.global.paletaElegida] || PALETAS.rosado;
-    const root = document.documentElement;
-    
-    root.style.setProperty('--bg-1', paleta.bg1);
-    root.style.setProperty('--bg-2', paleta.bg2);
-    root.style.setProperty('--accent', paleta.accent);
-    root.style.setProperty('--title-color', paleta.title);
-    root.style.setProperty('--text-color', paleta.text);
-    
-    root.style.setProperty('--pos-pc-v', CONFIG.global.posicionVerticalPC + '%');
-    root.style.setProperty('--pos-movil-v', CONFIG.global.posicionVerticalMovil + '%');
-    root.style.setProperty('--espacio-titulo-texto', CONFIG.diseno.espacioTituloATexto + 'px');
-    root.style.setProperty('--espacio-texto-boton', CONFIG.diseno.espacioTextoABoton + 'px');
-
-    document.getElementById('cover-bg').style.backgroundImage = `url('${CONFIG.global.fotoPort}')`;
-    document.getElementById('t-names').innerHTML = CONFIG.global.nombres.replace('&', '<em>&</em>');
-    document.getElementById('t-eyebrow').innerText = CONFIG.global.frase;
-    document.getElementById('t-cover-date').innerText = CONFIG.global.fecha;
-
-    renderSections();
-    document.body.style.opacity = "1";
-}
-
-// ... (Resto de funciones: renderSections, lightbox, countdown, etc.)
-const iconSet = {
-    heart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`,
-    calendar: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
-    map: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
-    camera: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
-    rings: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="8" cy="12" r="6"/><circle cx="16" cy="12" r="6"/></svg>`,
-    gift: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>`
-};
-
-function renderSections() {
-    const main = document.getElementById('main-content');
-    const createSec = (id, icon, title, body) => {
-        const s = document.createElement('section');
-        s.id = id;
-        s.innerHTML = `<div style="max-width:800px; margin:0 auto;"><div class="icon-container">${iconSet[icon]}</div><h2>${title}</h2>${body}</div>`;
-        main.appendChild(s);
-    };
-
-    createSec('historia', 'heart', 'Nuestra Historia', '<p>En un mundo lleno de coincidencias, encontrarnos fue nuestro momento favorito.</p>');
-    createSec('cuenta', 'calendar', 'Falta Poco', `<div class="countdown-grid"><div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-lab">Días</span></div><div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-lab">Hs</span></div><div class="cd-item"><span class="cd-num" id="mins">00</span><span class="cd-lab">Min</span></div><div class="cd-item"><span class="cd-num" id="secs">00</span><span class="cd-lab">Seg</span></div></div>`);
-    createSec('ubicacion', 'map', 'Dónde & Cuándo', `<div><h3>${CONFIG.eventos.ceremonia.t}</h3><p>${CONFIG.eventos.ceremonia.f} - ${CONFIG.eventos.ceremonia.h}<br>${CONFIG.eventos.ceremonia.l}<br>${CONFIG.eventos.ceremonia.d}</p><a href="${CONFIG.eventos.ceremonia.m}" target="_blank" class="btn">Ver Mapa</a></div><div style="margin-top:3rem"><h3>${CONFIG.eventos.fiesta.t}</h3><p>${CONFIG.eventos.fiesta.f} - ${CONFIG.eventos.fiesta.h}<br>${CONFIG.eventos.fiesta.l}<br>${CONFIG.eventos.fiesta.d}</p><a href="${CONFIG.eventos.fiesta.m}" target="_blank" class="btn">Ver Mapa</a></div>`);
-    let g = `<div class="gallery-grid">`;
-    CONFIG.fotos.forEach(f => g += `<div class="gallery-item" onclick="openLightbox('${f}')"><img src="${f}"></div>`);
-    createSec('galeria', 'camera', 'Momentos', g + `</div>`);
-    createSec('rsvp', 'rings', 'Confirmación', `<p>Confirmar asistencia antes del 10 de diciembre.</p><a href="https://wa.me/59899000000" target="_blank" class="btn">WhatsApp</a>`);
-    createSec('regalos', 'gift', 'Regalos', `<p>${CONFIG.regalos.texto}</p><button class="btn" onclick="openGiftModal()">Ver Datos</button>`);
-    createSec('cierre', 'heart', CONFIG.cierre.t, `<p>${CONFIG.cierre.s}</p><div style="width:120px; margin:2rem auto; color:var(--accent); opacity:0.5;"><svg viewBox="0 0 100 20" stroke="currentColor"><path d="M0 10 Q25 0 50 10 T100 10" fill="none"/></svg></div>`);
-
-    const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.1});
-    document.querySelectorAll('section').forEach(s => obs.observe(s));
-}
-
-function openLightbox(s) { document.getElementById('lightbox').querySelector('img').src = s; document.getElementById('lightbox').style.display = 'flex'; }
-function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; }
-function openGiftModal() {
-    const r = CONFIG.regalos;
-    document.getElementById('m-texto').innerText = r.texto;
-    document.getElementById('m-titular').innerText = r.titular;
-    document.getElementById('m-banco').innerText = r.banco;
-    document.getElementById('m-cuenta').innerText = r.cuenta;
-    document.getElementById('m-ci').innerText = r.ci;
-    document.getElementById('gift-modal').style.display = 'flex';
-}
-function closeGiftModal() { document.getElementById('gift-modal').style.display = 'none'; }
-function copyAcc() { navigator.clipboard.writeText(CONFIG.regalos.cuenta); const t = document.getElementById('toast'); t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 2000); }
-function toggleMusic() { const m = document.getElementById('bg-music'); m.paused ? m.play() : m.pause(); }
-
-setInterval(() => {
-    const t = CONFIG.global.fechaCuenta - new Date();
-    if(t<0) return;
-    document.getElementById('days').innerText = Math.floor(t/86400000);
-    document.getElementById('hours').innerText = Math.floor((t/3600000)%24);
-    document.getElementById('mins').innerText = Math.floor((t/60000)%60);
-    document.getElementById('secs').innerText = Math.floor((t/1000)%60);
-}, 1000);
-
-window.addEventListener('DOMContentLoaded', init);
-</script>
-</body>
-</html>
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 5000; cursor
