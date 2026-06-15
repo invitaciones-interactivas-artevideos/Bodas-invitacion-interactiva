@@ -75,28 +75,50 @@ h2 {
 
 /* ── BOTONES 3D BURBUJA ── */
 /* ── BOTONES 3D MEJORADOS (Para que siempre se vean) ── */
+/* ── BOTONES DELICADOS Y PROFESIONALES ── */
 .btn {
-    display: inline-block; 
-    padding: 1rem 2.2rem; 
+    display: inline-block;
+    padding: 1rem 2.5rem;
     margin: 10px;
-    /* Usamos el color de acento de la paleta como fondo principal */
-    /* Busca esta línea dentro de .btn y cámbiala por esta: */
-background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, var(--accent) 100%);
-    /* El texto ahora es blanco para que resalte sobre el color */
-    color: #FFFFFF !important; 
-    border: none; 
+    
+    /* Fondo: Un degradado muy suave casi blanco */
+    background: linear-gradient(145deg, #ffffff, var(--bg-2));
+    
+    /* TEXTO: Usamos el color de los títulos para que sea 100% legible */
+    color: var(--title-color) !important;
+    
+    /* Bordes: Finos y del color de acento con transparencia */
+    border: 1px solid var(--accent); 
     border-radius: 50px;
-    font-size: 0.75rem; 
-    font-weight: 600; 
-    text-transform: uppercase; 
-    letter-spacing: 2px;
-    text-decoration: none; 
-    cursor: pointer; 
-    transition: 0.3s;
-    /* Sombra 3D refinada */
-    box-shadow: 0 8px 15px rgba(0,0,0,0.15), 
-                inset 0 -4px 6px rgba(0,0,0,0.2), 
-                inset 0 4px 6px rgba(255,255,255,0.3);
+    
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px; 
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.4s ease;
+    
+    /* Sombra: Muy sutil para que sea elegante */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    filter: brightness(0.9); /* Se oscurece un penita al tocarlo */
+}
+
+.btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* El botón de WhatsApp usa el mismo estilo pero con el borde un poco más sólido */
+.btn-pink {
+    border: 1.5px solid var(--accent);
 }
 
 .btn:hover {
