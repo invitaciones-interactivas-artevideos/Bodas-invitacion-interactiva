@@ -386,7 +386,26 @@ root.style.setProperty('--pos-movil-vertical', CONFIG.global.posicionVerticalMov
 root.style.setProperty('--espacio-titulo-texto', CONFIG.diseno.espacioTituloATexto + 'px');
 root.style.setProperty('--espacio-texto-boton', CONFIG.diseno.espacioTextoABoton + 'px');
 
-document.getElementById('cover-bg').style.backgroundImage = `url('${CONFIG.global.fotoPort}')`;
+const coverBg = document.getElementById('cover-bg');
+const coverVideo = document.getElementById('cover-video');
+
+if (CONFIG.global.tipoPortada === "video") {
+    coverBg.style.display = "none";
+    coverVideo.style.display = "block";
+    coverVideo.querySelector("source").src = CONFIG.global.videoPort;
+    coverVideo.load();
+
+} else if (CONFIG.global.tipoPortada === "diseno") {
+    coverBg.style.display = "block";
+    coverVideo.style.display = "none";
+    coverBg.style.backgroundImage = `url('${CONFIG.global.disenoPort}')`;
+
+} else {
+    // Foto (por defecto)
+    coverBg.style.display = "block";
+    coverVideo.style.display = "none";
+    coverBg.style.backgroundImage = `url('${CONFIG.global.fotoPort}')`;
+}
 document.getElementById('t-names').innerHTML = CONFIG.global.nombres.replace('&', '<em>&</em>');
 document.getElementById('t-eyebrow').innerText = CONFIG.global.frase;
 document.getElementById('t-cover-date').innerText = CONFIG.global.fecha;
