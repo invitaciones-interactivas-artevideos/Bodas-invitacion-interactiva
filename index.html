@@ -195,6 +195,38 @@ a.btn {
 
 @media (min-width: 768px) { 
     .gallery-grid { grid-template-columns: repeat(4, 1fr); } 
+  /* ═════════ ORNAMENTOS DECORATIVOS ═════════ */
+
+section {
+    position: relative;
+    overflow: hidden;
+}
+
+/* capa base */
+.ornamento {
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+    animation: floatOrnamento 8s ease-in-out infinite;
+}
+
+/* posiciones */
+.orn-top-left { top: -40px; left: -40px; }
+.orn-top-right { top: -40px; right: -40px; }
+.orn-bottom-left { bottom: -50px; left: -50px; }
+.orn-bottom-right { bottom: -50px; right: -50px; }
+
+/* flotación suave premium */
+@keyframes floatOrnamento {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+
 }
 </style>
 </head>
@@ -576,6 +608,7 @@ updateCD();
 setInterval(updateCD, 1000);
 const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.1});
 document.querySelectorAll('section').forEach(s => obs.observe(s));
+  aplicarOrnamentos();
 </script>
 </body>
 </html>
